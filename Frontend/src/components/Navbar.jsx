@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import LogoImg from "../utils/Images/Logo.png";
 import { Link as LinkR, NavLink } from "react-router-dom";
 import { MenuRounded } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
@@ -40,9 +39,6 @@ const NavLogo = styled(LinkR)`
   font-size: 18px;
   text-decoration: none;
   color: ${({ theme }) => theme.black};
-`;
-const Logo = styled.img`
-  height: 42px;
 `;
 const Mobileicon = styled.div`
   color: ${({ theme }) => theme.text_primary};
@@ -137,8 +133,7 @@ const Navbar = ({ currentUser }) => {
           <MenuRounded sx={{ color: "inherit" }} />
         </Mobileicon>
         <NavLogo to="/">
-          <Logo src={LogoImg} />
-          Fittrack
+          Fitnesstracker
         </NavLogo>
 
         <MobileMenu isOpen={isOpen}>

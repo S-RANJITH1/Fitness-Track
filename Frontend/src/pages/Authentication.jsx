@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import LogoImage from "../utils/Images/Logo.png";
+
 import AuthImage from "../utils/Images/AuthImage.jpg";
 import SignIn from "../components/Signin";
 import SignUp from "../components/SignUp";
@@ -20,13 +20,6 @@ const Left = styled.div`
   @media (max-width: 700px) {
     display: none;
   }
-`;
-const Logo = styled.img`
-  position: absolute;
-  width: 70px;
-  top: 40px;
-  left: 60px;
-  z-index: 10;
 `;
 const Image = styled.img`
   position: relative;
@@ -67,7 +60,6 @@ const Authentication = () => {
   return (
     <Container>
       <Left>
-        <Logo src={LogoImage} />
         <Image src={AuthImage} />
       </Left>
       <Right>
