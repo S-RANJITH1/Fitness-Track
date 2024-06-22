@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { counts } from "../utils/data";
 import CountsCard from "../components/cards/CountsCard";
@@ -69,49 +69,54 @@ const Dashboard = () => {
   const [data, setData] = useState();
   const [buttonLoading, setButtonLoading] = useState(false);
   const [todaysWorkouts, setTodaysWorkouts] = useState([]);
-  const [workout, setWorkout] = useState(`#Legs
--Back Squat
--5 setsX15 reps
--30 kg
--10 min`);
+  const [workout, setWorkout] = useState(
+    `#Legs\n-Back Squat\n-5 setsX15 reps\n-30 kg\n-10 min`
+  );
 
-  const dashboardData = async () => {
+  const dashboardData = useCallback(async () => {
     setLoading(true);
     const token = localStorage.getItem("fittrack-app-token");
-    await getDashboardDetails(token).then((res) => {
+    try {
+    const res = await getDashboardDetails(token);
       setData(res.data);
-      console.log(res.data);
+    } catch (error) {
+      console.error("Error fetching dashboard data:",error);
+    } finally {
       setLoading(false);
-    });
-  };
-  const getTodaysWorkout = async () => {
+    }
+  }, []);
+
+  const getTodaysWorkout = useCallback(async () => {
     setLoading(true);
     const token = localStorage.getItem("fittrack-app-token");
-    await getWorkouts(token, "").then((res) => {
-      setTodaysWorkouts(res?.data?.todaysWorkouts);
-      console.log(res.data);
+    try {
+    const res = await getWorkouts(token, "");
+      setTodaysWorkouts(res?.data?.todaysWorkouts || []);
+    } catch (error) {
+      console.error("Error fetching today's workouts:", error);
+    } finally {
       setLoading(false);
-    });
-  };
+    }
+  }, []);
 
   const addNewWorkout = async () => {
     setButtonLoading(true);
     const token = localStorage.getItem("fittrack-app-token");
-    await addWorkout(token, { workoutString: workout })
-      .then((res) => {
+    try {
+    await addWorkout(token, { workoutString: workout });
         dashboardData();
         getTodaysWorkout();
+    } catch (error) {
+      console.error("Error adding new workout:", error);
+    } finally {
         setButtonLoading(false);
-      })
-      .catch((err) => {
-        alert(err);
-      });
+      }
   };
 
   useEffect(() => {
     dashboardData();
     getTodaysWorkout();
-  }, []);
+  }, [dashboardData, getTodaysWorkout]);
   return (
     <Container>
       <Wrapper>
